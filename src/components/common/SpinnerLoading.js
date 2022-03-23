@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-const SpinnerLoading = ({msg}) => {
+const SpinnerLoading = ({ msg }) => {
   return (
     <div>
       <div className="d-flex justify-content-center m-5">
@@ -16,9 +17,11 @@ const SpinnerLoading = ({msg}) => {
 };
 
 SpinnerLoading.defaultProps = {
-    msg: 'Loading...'
-}
+  msg: "Loading...",
+};
 
-
+SpinnerLoading.propTypes = {
+  msg: PropTypes.string.isRequired,
+};
 
 export default SpinnerLoading;
