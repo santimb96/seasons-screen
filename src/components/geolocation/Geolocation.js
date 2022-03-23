@@ -1,31 +1,42 @@
 import React from "react";
 import ErrorGeo from "../errors/ErrorGeo";
 import SuccessGeo from "../success/SuccessGeo";
+import SpinnerLoading from "../common/SpinnerLoading";
 
 class Geolocation extends React.Component {
   state = {
     latitude: null,
     errorMsg: "",
+    spinnerMsg: 'We need your location!'
   };
 
   componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(
-      (position) =>{
+      (position) => {
         console.table(position.coords);
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-        })},
+        });
+      },
       (err) => this.setState({ errorMsg: err.message })
     );
   }
 
-  render() {
-    !this.state.latitude || !this.state.longitude
-      ? this.output = <ErrorGeo error={this.state.errorMsg} />
-      : this.output = <SuccessGeo lat={this.state.latitude} />;
+  isLoaded() {
+    if (!this.state.latitude) {
+      if (this.state.errorMsg === "") {
+        return <SpinnerLoading msg={this.state.spinnerMsg}/>;
+      } else {
+        return <ErrorGeo error={this.state.errorMsg} />;
+      }
+    } else {
+      return <SuccessGeo lat={this.state.latitude} />;
+    }
+  }
 
-    return <div className="container-fluid">{this.output}</div>;
+  render() {
+    return <div className="container-fluid">{this.isLoaded()}</div>;
   }
 }
 
